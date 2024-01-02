@@ -1,0 +1,19 @@
+.product-table {
+    border-right-width: 0;
+    clear: both;
+    margin-top: 6px !important;
+    margin-bottom: 6px !important;
+    max-width: none !important;
+    border-collapse: separate !important;
+    border-spacing: 0
+    border: 1px solid #e3e6f0;
+    color: #858796
+    box-sizing: border-box;
+    display: table;
+    text-indent: initial;
+}
+
+.center-page {
+    display: flex;
+    justify-content: center;
+}
