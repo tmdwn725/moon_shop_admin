@@ -61,7 +61,7 @@
                                             <td>
                                                 <img th:src="'/fileDownload?fileSeq=' + ${product.productFileList[0].file.fileSeq}" alt="" style="width:160px;">
                                             </td>
-                                            <td th:text="${product.productName}" th:onclick="|location.href='@{/product/getProductInfo?productSeq=}${product.productSeq}'|"/>
+                                            <td th:text="${product.productName}" th:onclick="|location.href='@{/product/productInfo?productSeq=}${product.productSeq}'|"/>
                                             <td class="product-type" th:text="${product.productType.name}"/>
                                             <td class="product-price" th:text="${#numbers.formatDecimal(product.price, 0, 'COMMA', 0, 'POINT')} + '원'">
                                             <td class="product-reg-dt" th:text="${#temporals.format(product.regDate, 'yyyy-MM-dd')}"/>

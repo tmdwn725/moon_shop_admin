@@ -48,4 +48,58 @@ public class ProductController {
         return "product/productList";
     }
 
+    /**
+     * 상품상세정보 조회
+     * @param model
+     * @param product
+     * @return
+     */
+    @RequestMapping("/productInfo")
+    public String productInfo(Model model, ProductDTO product){
+        ProductDTO productDTO = new ProductDTO();
+        ProductType myProductType = ProductType.CARDIGAN;
+
+        if(product.getProductSeq() > 0){
+            productDTO = productService.selectProductInfo(product.getProductSeq());
+            myProductType = productDTO.getProductType();
+        }
+
+        model.addAttribute("product", productDTO);
+        model.addAttribute("myProductType",myProductType);
+        model.addAttribute("productType", Arrays.asList(ProductType.values()));
+        return "product/productInfo";
+    }
+
+    /**
+     * 상품 등록
+     * @param productDTO
+     * @return
+     */
+    @RequestMapping("/saveProduct")
+    public ResponseEntity<Void> saveMyProduct(ProductDTO productDTO
+            , @RequestParam("file-img1") MultipartFile file1, @RequestParam("file-img2") MultipartFile file2
+            , @RequestParam("file-img3") MultipartFile file3, @RequestParam("file-img4") MultipartFile file4) throws IOException {
+        String memberId = SecurityContextHolder.getContext().getAuthentication().getName();
+        MemberDTO member = memberService.selectMemberById(memberId);
+        productDTO.setProductType(ProductType.of(productDTO.getProductTypeCd()));
+        productDTO.setSellerSeq(member.getMemberSeq());
+        MultipartFile[] fileList = {file1, file2, file3, file4};
+        productService.saveProductInfo(productDTO, fileList);
+        return ResponseEntity.ok().build();
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

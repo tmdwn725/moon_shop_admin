@@ -47,4 +47,68 @@ public class ProductService {
         List<ProductDTO> list = ModelMapperUtil.mapAll(result.getContent(), ProductDTO.class);
         return new PageImpl<>(list, pageRequest, total);
     }
+
+    /**
+     * 상품 정보 상세 조회
+     * @param productSeq
+     * @return
+     */
+    public ProductDTO selectProductInfo(Long productSeq){
+        Product productInfo = productRepository.selectProduct(productSeq);
+        ProductDTO product = ModelMapperUtil.map(productInfo, ProductDTO.class);
+        return product;
+    }
+
+    /**
+     * 상품정보 저장
+     * @param productDTO
+     * @param imageFileList
+     */
+    @Transactional
+    public void saveProductInfo(ProductDTO productDTO, MultipartFile[] imageFileList){
+        // 현재 날짜와 시간 취득
+        LocalDateTime nowDate = LocalDateTime.now();
+        Product product = new Product();
+        product.createProduct(productDTO.getProductSeq(), productDTO.getSellerSeq(), productDTO.getProductName(), productDTO.getProductContent(), productDTO.getProductType(), productDTO.getPrice(),nowDate, null);
+
+        // 상품정보 수정
+        if(productDTO.getProductSeq() > 0){
+
+        }else{ // 상품정보 등록
+            productRepository.save(product);
+            List<ProductStock> productStockList = productDTO.getSizeTypes().entrySet().stream()
+                    .map(entry -> {
+                        String sizeType = entry.getKey();
+                        String quantity = entry.getValue();
+                        ProductStock ps = new ProductStock();
+                        ps.createProductStock(product, sizeType, Integer.parseInt(quantity));
+                        return ps;
+                    })
+                    .collect(Collectors.toList());
+            productStockRepository.saveAll(productStockList);
+
+            // 상품 이미지 사진 저장
+            Arrays.stream(imageFileList)
+                    .filter(imageFile -> imageFile.getSize() > 0)
+                    .forEach(imageFile -> {
+
+                        String filePth = imageUploadPath + "/" + product.getProductSeq();
+
+                        String saveFilePth = FileUtil.saveFile(imageFile, filePath, filePth);
+                        File fileInfo = new File();
+                        fileInfo.CreateFile(imageFile.getSize(), nowDate, null, imageFile.getOriginalFilename(), saveFilePth, "jpg");
+                        fileRepository.save(fileInfo);
+
+                        String repYn = "N";
+                        // index 구하기
+                        int index = Arrays.asList(imageFileList).indexOf(imageFile);
+                        if (index == 0) {
+                            repYn = "Y";
+                        }
+                        ProductFile productFile = new ProductFile();
+                        productFile.createProductFile(product, repYn, fileInfo, index+1);
+                        productFileRepository.save(productFile);
+                });
+        }
+    }
 }

@@ -63,4 +63,35 @@ public class ProductRepositoryImpl implements ProductConfig {
         }
         return qProduct.productName.contains(searchStr);
     }
+
+    /**
+     * 상품정보조회
+     * @param productSeq
+     * @return
+     */
+    public Product selectProduct(Long productSeq){
+        Product productInfo = queryFactory
+                .selectFrom(qProduct)
+                .join(qProduct.productStockList, qProductStock)
+                .join(qProduct.productFileList, qProductFile)
+                .join(qProductFile.file, qFile)
+                .where(qProduct.productSeq.eq(productSeq))
+                .fetchOne();
+        return productInfo;
+    }
+
+    /**
+     * 상품정보 수정
+     * @param product
+     */
+    public void updateProductInfo(Product product){
+        queryFactory.update(qProduct)
+                .set(qProduct.productName, product.getProductName())
+                .set(qProduct.productContent, product.getProductContent())
+                .set(qProduct.price, product.getPrice())
+                .set(qProduct.productType, product.getProductType())
+                .where(qProduct.productSeq.eq(product.getProductSeq()))
+                .execute();
+    }
+
 }

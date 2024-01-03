@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>MoonShop-Admin</title>
+
+    <!-- Custom fonts for this template-->
+    <link th:href="@{/css/vendor/fontawesome-free/all.min.css}" rel="stylesheet" type="text/css">
+    <link
+            href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+            rel="stylesheet">
+    <!-- Custom styles for this template-->
+    <link th:href="@{/css/sb-admin-2.min.css}" rel="stylesheet">
+    <link th:href="@{/css/common/tab.css}" rel="stylesheet">
+    <link th:href="@{/css/product/productInfo.css}" rel="stylesheet">
+</head>
+<body id="page-top">
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+        <!-- Sidebar -->
+        <th:block th:replace="common/side :: sideFragment"></th:block>
+        <!-- End of Sidebar -->
+
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+            <!-- Main Content -->
+            <div id="content">
+                <!-- Header -->
+                <th:block th:replace="common/header :: headFragment"></th:block>
+                <!-- End of Header -->
+                <!-- Page Heading -->
+                <ul class="tabs">
+                    <li class="tab-link current" data-tab="tab-1">상품정보</li>
+                </ul>
+                <br/>
+                <!-- Begin Page Content -->
+                <div class="container-fluid tab-content current" id="tab-1">
+                    <div class="row">
+                        <input id="product-seq" type="hidden"  th:value="${product.productSeq}">
+                        <div class="col-lg-9 col-md-6 col-sm-6">
+                            <div class="checkout__form__input">
+                                <p>상품명 <span>*</span></p>
+                                <input type="text" id="product-name" class="form-control bg-light" th:value="${product.productName}">
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6 col-sm-6">
+                            <div class="checkout__form__input">
+                                <p>가격 <span>* (원 단위)</span></p>
+                                <input type="text" id="product-price" class="form-control bg-light" th:value="${product.price}">
+                            </div>
+                        </div>
+                    </div>
+                    <br/>
+                    <div class="row">
+                        <br/>
+                        <div class="col-lg-12">
+                            <p>상품사진 <span>*</span></p>
+                        </div>
+                        <form id="product-image-form" onsubmit="return false;" enctype="multipart/form-data">
+                            <div class="row" style="margin-left: 0px;">
+                                <div class="col-lg-3 col-md-6 col-sm-6">
+                                    <input type="file" id="file-img1" name="file-img1" class="real-upload" accept="image/*" required multiple>
+                                    <div class="upload" id="upload-img1">
+                                        <img th:if="${product.productFileList.size > 0}" th:src="'/fileDownload?fileSeq=' +${product.productFileList[0].file.fileSeq}"
+                                             style="width: 200px;" alt="">
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 col-md-6 col-sm-6">
+                                    <input type="file" id="file-img2" name="file-img2" class="real-upload1" accept="image/*" required multiple>
+                                    <div class="upload1" id="upload-img2">
+                                        <img th:if="${product.productFileList.size > 1}" th:src="'/fileDownload?fileSeq=' +${product.productFileList[1].file.fileSeq}" alt="">
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 col-md-6 col-sm-6">
+                                    <input type="file" id="file-img3" name="file-img3" class="real-upload2" accept="image/*" required multiple>
+                                    <div class="upload2" id="upload-img3">
+                                        <img th:if="${product.productFileList.size > 2}" th:src="'/fileDownload?fileSeq=' +${product.productFileList[2].file.fileSeq}" alt="">
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 col-md-6 col-sm-6">
+                                    <input type="file" id="file-img4" name="file-img4" class="real-upload3" accept="image/*" required multiple>
+                                    <div class="upload3" id="upload-img4">
+                                        <img th:if="${product.productFileList.size > 3}" th:src="'/fileDownload?fileSeq=' +${product.productFileList[3].file.fileSeq}" alt="">
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <br/>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <p>상품 상세 설명</p>
+                        </div>
+                        <div class="col-lg-12">
+                            <textarea class="form-control bg-light" id="product-content" th:value="${product.productContent}" th:text="${product.productContent}"></textarea>
+                        </div>
+                    </div>
+                    <br/>
+                    <div class="row">
+                        <div class="col-lg-6 col-md-6 col-sm-6">
+                            <p>상품종류 <span>*</span></p>
+                            <select class="form-control bg-light" id="product-type" onchange="onProductTypeChange(this.value)">
+                                <option value=""> == 상품 종류 == </option>
+                                <option th:each="productType : ${productType}"
+                                        th:if="${productType.getParentCategory().isEmpty()}"
+                                        th:value="${productType}"
+                                        th:text="${productType.value}"
+                                        th:selected="${productType} == ${myProductType.getParentCategory().get()}">
+                                </option>
+                            </select>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6">
+                            <p>상품상세종류 <span>*</span></p>
+                            <select class="form-control bg-light" id="product-detail-type">
+                                <option value=""> == 먼저 상품 종류를 선택하세요 == </option>
+                                <option style="display:none;"
+                                        th:each="productType : ${productType}"
+                                        th:unless="${productType.getParentCategory().isEmpty()}"
+                                        th:value="${productType.code}"
+                                        th:name="${productType.getParentCategory().get()}"
+                                        th:text="${productType.value}"
+                                        th:selected="${productType} == ${myProductType}">>
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                    <br/>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="checkout" style="display: inline-block;">
+                                <p>사이즈 <span>*</span></p>
+                                <div>
+                                    <input type="text" class="form-control bg-light" id="size-name" placeholder="사이즈명 입력"
+                                           style="display:inline-block; width:30%;">
+                                    <button class="btn" id="add-size">추가</button>
+                                </div>
+                                <br/>
+                                <div class="size-list" id="sizeList">
+                                    <div th:each="stock : ${product.productStockList}" style="margin-left:10px; display: inline-block;">
+                                        <span th:text="${stock.productSize} + ': '"></span>
+                                        <input type="number" th:id="${stock.productSize}" class="product-size" name="product-size" min="0" max="100" th:value="${stock.productCount}">
+                                        <button class="btn del-size" th:data-parameter="${stock.productSize}">삭제</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="btn-area">
+                                <button class="btn btn-save" type="button" id="btn-save">저장</button>
+                            </div>
+                        </div>
+                    </div>
+                <div class="container-fluid tab-content" id="tab-2">tab content2</div>
+                </div>
+            <!-- /.container-fluid -->
+            </div>
+            <!-- End of Main Content -->
+
+            <!-- Footer -->
+            <footer class="sticky-footer bg-white">
+                <div class="container my-auto">
+                    <div class="copyright text-center my-auto">
+                        <span>Copyright &copy; Your Website 2020</span>
+                    </div>
+                </div>
+            </footer>
+            <!-- End of Footer -->
+
+        </div>
+        <!-- End of Content Wrapper -->
+
+    </div>
+    <!-- End of Page Wrapper -->
+
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+
+    <!-- Bootstrap core JavaScript-->
+    <script th:src="@{/js/vendor/jquery/jquery.min.js}"></script>
+    <script th:src="@{/js/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script th:src="@{/js/vendor/jquery-easing/jquery.easing.min.js}"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script th:src="@{/js/sb-admin-2.min.js}"></script>
+    <script th:src="@{/js/common/tab.js}"></script>
+    <script th:src="@{/js/product/productInfo.js}"></script>
+
+</body>
+</html>
