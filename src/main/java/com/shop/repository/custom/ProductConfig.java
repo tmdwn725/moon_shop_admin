@@ -7,4 +7,6 @@ import org.springframework.data.domain.Pageable;
 
 public interface ProductConfig {
     Page<Product> selectProductPage(Pageable pageable, ProductType productType, String searchStr);
+    Product selectProduct(Long productSeq);
+    void updateProductInfo(Product product);
 }
