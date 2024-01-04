@@ -1,7 +1,5 @@
 package com.shop.controller;
 
-import com.shop.dto.CouponDTO;
-import com.shop.dto.MemberCouponDTO;
 import com.shop.dto.MemberDTO;
 import com.shop.dto.ProductDTO;
 import com.shop.dto.enums.ProductType;
@@ -15,14 +13,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -32,7 +27,7 @@ public class ProductController {
     private final ProductService productService;
     private final ProductStockService productStockService;
     private final CouponService couponService;
-    @RequestMapping("/productList")
+    @GetMapping("/productList")
     public String productList(@RequestParam(value="page",required = false, defaultValue="1") int page
             , @RequestParam(value="type",required = false, defaultValue="") String type
             , @RequestParam(value="searchStr",required = false, defaultValue="") String searchStr, Model model) {
@@ -41,20 +36,20 @@ public class ProductController {
             productType = ProductType.of(type);
         }
         Page<ProductDTO> productList = productService.selectProductList(page,6, productType, searchStr);
+        model.addAttribute("searchStr", searchStr);
         model.addAttribute("currentPage", page);
         model.addAttribute("productList", productList);
         model.addAttribute("productType", Arrays.asList(ProductType.values()));
         model.addAttribute("type",type);
         return "product/productList";
     }
-
     /**
      * 상품상세정보 조회
      * @param model
      * @param product
      * @return
      */
-    @RequestMapping("/productInfo")
+    @GetMapping("/productInfo")
     public String productInfo(Model model, ProductDTO product){
         ProductDTO productDTO = new ProductDTO();
         ProductType myProductType = ProductType.CARDIGAN;
@@ -69,14 +64,13 @@ public class ProductController {
         model.addAttribute("productType", Arrays.asList(ProductType.values()));
         return "product/productInfo";
     }
-
     /**
      * 상품 등록
      * @param productDTO
      * @return
      */
-    @RequestMapping("/saveProduct")
-    public ResponseEntity<Void> saveMyProduct(ProductDTO productDTO
+    @PostMapping("/saveProduct")
+    public ResponseEntity<Void> saveProduct(ProductDTO productDTO
             , @RequestParam("file-img1") MultipartFile file1, @RequestParam("file-img2") MultipartFile file2
             , @RequestParam("file-img3") MultipartFile file3, @RequestParam("file-img4") MultipartFile file4) throws IOException {
         String memberId = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -85,6 +79,26 @@ public class ProductController {
         productDTO.setSellerSeq(member.getMemberSeq());
         MultipartFile[] fileList = {file1, file2, file3, file4};
         productService.saveProductInfo(productDTO, fileList);
+        return ResponseEntity.ok().build();
+    }
+    /**
+     * 상품 삭제
+     * @param productSeq
+     * @return
+     */
+    @DeleteMapping("/removeProduct")
+    public ResponseEntity<Void> removeProduct(@RequestParam("productSeq") Long productSeq) {
+        productService.removeProduct(productSeq);
+        return ResponseEntity.ok().build();
+    }
+    /**
+     * 상품 재고 삭제
+     * @param product
+     * @return
+     */
+    @DeleteMapping("/removeProductStock")
+    public ResponseEntity<Void> removeProductStock(ProductDTO product) {
+        productStockService.deleteProductStock(product);
         return ResponseEntity.ok().build();
     }
 }

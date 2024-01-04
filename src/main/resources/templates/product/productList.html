@@ -20,7 +20,6 @@
 </head>
 
 <body id="page-top">
-
     <!-- Page Wrapper -->
     <div id="wrapper">
         <!-- Sidebar -->
@@ -42,6 +41,15 @@
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
                             <h6 class="m-0 font-weight-bold text-primary">상품목록</h6>
+                        </div>
+                        <div>
+                            <form action="productList">
+                                <input type="text" class="input-sch" name="searchStr" placeholder="Search for..." th:value="${searchStr}">
+                                <button class="btn btn-primary" type="submit">
+                                    <i class="fas fa-search fa-sm"></i>
+                                </button>
+                                <button class="btn btn-add" type="button" id="btn-add" onclick="location.href='/product/productInfo'">추가</button>
+                            </form>
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
@@ -65,7 +73,7 @@
                                             <td class="product-type" th:text="${product.productType.name}"/>
                                             <td class="product-price" th:text="${#numbers.formatDecimal(product.price, 0, 'COMMA', 0, 'POINT')} + '원'">
                                             <td class="product-reg-dt" th:text="${#temporals.format(product.regDate, 'yyyy-MM-dd')}"/>
-                                            <td class="product-delete"><span class="icon_close" th:onclick="'removeMyProduct(' + ${product.productSeq} + ')'"></span></td>
+                                            <td class="product-delete"><button type="button" class="btn btn-remove" th:onclick="'removeProduct(' + ${product.productSeq} + ')'">삭제</button></td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -127,6 +135,7 @@
 
     <!-- Page level custom scripts -->
     <script th:src="@{/js/demo/datatables-demo.js}"></script>
+    <script th:src="@{/js/product/productList.js}"></script>
 
 </body>
 

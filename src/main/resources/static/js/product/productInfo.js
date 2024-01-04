@@ -79,6 +79,8 @@ function onProductTypeChange(value) {
     // 가장 위에 있는 옵션을 선택
     selectBox.prop('selectedIndex', 0);
 }
+
+// 상품 정보 저장
 document.getElementById('btn-save').addEventListener('click', function(e){
     let seq = document.getElementById('product-seq').value;
     if(seq == ''){
@@ -113,7 +115,7 @@ document.getElementById('btn-save').addEventListener('click', function(e){
 
     $.ajax({
         type: "POST",
-        url: "/product/saveProductInfo",
+        url: "/product/saveProduct",
         contentType: false, // 필수: FormData를 사용하기 때문에 false로 설정
         processData: false, // 필수: FormData를 사용하기 때문에 false로 설정
         data:formData,
@@ -170,11 +172,7 @@ document.getElementById('add-size').addEventListener('click',function(e){
    const removeButton = document.createElement('button');
    removeButton.textContent = '삭제';
    removeButton.classList.add("btn");
-   // 버튼에 onclick 이벤트 처리기 추가
-   removeButton.onclick = function() {
-     // 이벤트 핸들러에서 인자를 변수로 사용하려면 클로저를 이용한다.
-     handleClick(sizeName);
-   };
+   removeButton.classList.add("del-size");
 
    // 버튼을 버튼 컨테이너에 추가
    newEntry.appendChild(removeButton);
@@ -182,12 +180,11 @@ document.getElementById('add-size').addEventListener('click',function(e){
 });
 
 // 상품 재고 삭제
-const delSize = document.querySelectorAll('.del-size');
-delSize.forEach((target) => target.addEventListener("click", function(e){
+document.querySelectorAll('.del-size').forEach((target) => target.addEventListener("click", function(e){
     if(confirm("재고를 삭제하시겠습니까?")){
         const productSize = e.target.getAttribute('data-parameter');
         const productSeq = document.getElementById('product-seq').value;
-         $.ajax({
+        $.ajax({
             url: "/product/removeProductStock",
             type: "DELETE",
             data:{

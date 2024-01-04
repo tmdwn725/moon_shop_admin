@@ -23,6 +23,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class ProductService {
     @Value("${root.filePath}")
@@ -64,7 +65,6 @@ public class ProductService {
      * @param productDTO
      * @param imageFileList
      */
-    @Transactional
     public void saveProductInfo(ProductDTO productDTO, MultipartFile[] imageFileList){
         // 현재 날짜와 시간 취득
         LocalDateTime nowDate = LocalDateTime.now();
@@ -110,5 +110,18 @@ public class ProductService {
                         productFileRepository.save(productFile);
                 });
         }
+    }
+
+    /**
+     * 상품정보 삭제
+     * @param productSeq
+     */
+    public void removeProduct(Long productSeq){
+        Product product = productRepository.findById(productSeq).get();
+        List<ProductStock> productStockList = product.getProductStockList();
+        fileRepository.delete(product.getProductFileList().get(0).getFile());
+        productFileRepository.deleteAll(product.getProductFileList());
+        productStockRepository.deleteAll(productStockList);
+        productRepository.delete(product);
     }
 }

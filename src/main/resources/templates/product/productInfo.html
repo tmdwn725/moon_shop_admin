@@ -73,19 +73,22 @@
                                 <div class="col-lg-3 col-md-6 col-sm-6">
                                     <input type="file" id="file-img2" name="file-img2" class="real-upload1" accept="image/*" required multiple>
                                     <div class="upload1" id="upload-img2">
-                                        <img th:if="${product.productFileList.size > 1}" th:src="'/fileDownload?fileSeq=' +${product.productFileList[1].file.fileSeq}" alt="">
+                                        <img th:if="${product.productFileList.size > 1}" th:src="'/fileDownload?fileSeq=' +${product.productFileList[1].file.fileSeq}"
+                                             style="width: 200px;" alt="">
                                     </div>
                                 </div>
                                 <div class="col-lg-3 col-md-6 col-sm-6">
                                     <input type="file" id="file-img3" name="file-img3" class="real-upload2" accept="image/*" required multiple>
                                     <div class="upload2" id="upload-img3">
-                                        <img th:if="${product.productFileList.size > 2}" th:src="'/fileDownload?fileSeq=' +${product.productFileList[2].file.fileSeq}" alt="">
+                                        <img th:if="${product.productFileList.size > 2}" th:src="'/fileDownload?fileSeq=' +${product.productFileList[2].file.fileSeq}"
+                                             style="width: 200px;" alt="">
                                     </div>
                                 </div>
                                 <div class="col-lg-3 col-md-6 col-sm-6">
                                     <input type="file" id="file-img4" name="file-img4" class="real-upload3" accept="image/*" required multiple>
                                     <div class="upload3" id="upload-img4">
-                                        <img th:if="${product.productFileList.size > 3}" th:src="'/fileDownload?fileSeq=' +${product.productFileList[3].file.fileSeq}" alt="">
+                                        <img th:if="${product.productFileList.size > 3}" th:src="'/fileDownload?fileSeq=' +${product.productFileList[3].file.fileSeq}"
+                                             style="width: 200px;" alt="">
                                     </div>
                                 </div>
                             </div>
