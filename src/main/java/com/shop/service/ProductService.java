@@ -2,10 +2,16 @@ package com.shop.service;
 
 import com.shop.common.FileUtil;
 import com.shop.common.ModelMapperUtil;
-import com.shop.domain.*;
+import com.shop.domain.File;
+import com.shop.domain.Product;
+import com.shop.domain.ProductFile;
+import com.shop.domain.ProductStock;
 import com.shop.dto.ProductDTO;
 import com.shop.dto.enums.ProductType;
-import com.shop.repository.*;
+import com.shop.repository.FileRepository;
+import com.shop.repository.ProductFileRepository;
+import com.shop.repository.ProductRepository;
+import com.shop.repository.ProductStockRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -18,8 +24,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
