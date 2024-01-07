@@ -19,7 +19,6 @@ import java.util.List;
 public class CouponRepositoryImpl implements CouponConfig {
     private final JPAQueryFactory queryFactory;
     QCoupon qCoupon = QCoupon.coupon;
-
     /**
      * 쿠폰 목록 조회
      * @param pageable
