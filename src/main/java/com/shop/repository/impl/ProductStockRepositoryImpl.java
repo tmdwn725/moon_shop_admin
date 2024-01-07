@@ -25,7 +25,7 @@ public class ProductStockRepositoryImpl implements ProductStockConfig {
                 .fetchOne();
     }
     /**
-     * 상품 재고 수 주정
+     * 상품 재고 수 수정
      * @param productSeq
      * @param size
      * @param count
