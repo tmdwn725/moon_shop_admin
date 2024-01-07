@@ -24,6 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -77,7 +78,40 @@ public class ProductService {
 
         // 상품정보 수정
         if(productDTO.getProductSeq() > 0){
+            productRepository.updateProductInfo(product);
+            for (Map.Entry<String, String> entry : productDTO.getSizeTypes().entrySet()) {
+                ProductStock productStock = productStockRepository.selectProductStock(product.getProductSeq(),entry.getKey());
+                if(productStock != null){
+                    productStockRepository.updateProductStockCount(product.getProductSeq(),entry.getKey(),Integer.parseInt(entry.getValue()));
+                }else{
+                    ProductStock ps = new ProductStock();
+                    ps.createProductStock(product, entry.getKey(), Integer.parseInt(entry.getValue()));
+                    productStockRepository.save(ps);
+                }
+            }
 
+            Arrays.stream(imageFileList)
+                    .filter(imageFile -> imageFile.getSize() > 0)
+                    .forEach(imageFile -> {
+                        String filePth = imageUploadPath + "/" + product.getProductSeq();
+                        String repYn = "N";
+
+                        // index 구하기
+                        int index = Arrays.asList(imageFileList).indexOf(imageFile);
+                        if (index == 0) {
+                            repYn = "Y";
+                        }
+                        // 기준 상품 파일 삭제
+                        productFileRepository.deleteProductFile(product.getProductSeq(),repYn,index+1);
+                        String saveFilePth = FileUtil.saveFile(imageFile, filePath, filePth);
+                        File fileInfo = new File();
+                        fileInfo.CreateFile(imageFile.getSize(), nowDate, null, imageFile.getOriginalFilename(), saveFilePth, "jpg");
+                        fileRepository.save(fileInfo);
+
+                        ProductFile productFile = new ProductFile();
+                        productFile.createProductFile(product, repYn, fileInfo, index+1);
+                        productFileRepository.save(productFile);
+                    });
         }else{ // 상품정보 등록
             productRepository.save(product);
             List<ProductStock> productStockList = productDTO.getSizeTypes().entrySet().stream()

@@ -24,4 +24,17 @@ public class ProductStockRepositoryImpl implements ProductStockConfig {
                 .where(qProductStock.product.productSeq.eq(productSeq),qProductStock.productSize.eq(sizeType))
                 .fetchOne();
     }
+    /**
+     * 상품 재고 수 주정
+     * @param productSeq
+     * @param size
+     * @param count
+     */
+    public void updateProductStockCount(Long productSeq, String size, int count){
+        queryFactory.update(qProductStock)
+                .set(qProductStock.productCount,count)
+                .where(qProductStock.product.productSeq.eq(productSeq)
+                        .and(qProductStock.productSize.eq(size)))
+                .execute();
+    }
 }
