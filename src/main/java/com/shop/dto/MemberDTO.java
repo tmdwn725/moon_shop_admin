@@ -13,6 +13,7 @@ public class MemberDTO {
     private String name;
     private String nickName;
     private String email;
+    private String zipCode;
     private String address;
     private String detailAddress;
     private String telNo;
@@ -21,5 +22,4 @@ public class MemberDTO {
     private String password;
     private String authority;
     private List<MemberCouponDTO> memberCouponList = new ArrayList<>();
-    private String myCouponYn;
 }
