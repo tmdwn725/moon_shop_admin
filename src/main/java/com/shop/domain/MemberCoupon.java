@@ -23,10 +23,7 @@ public class MemberCoupon {
     private Coupon coupon;
     @Column(name="use_yn")
     private String useYn;
-    public void createMemberCoupon(Long memberCouponSeq, Member member, Coupon coupon, String useYn){
-        if(memberCouponSeq != 0L) {
-            this.memberCouponSeq = memberCouponSeq;
-        }
+    public void createMemberCoupon(Member member, Coupon coupon, String useYn){
         this.member = member;
         this.coupon = coupon;
         this.useYn = useYn;

@@ -57,7 +57,7 @@ document.getElementById('member-coupon-save-btn').addEventListener('click', func
 
     $.ajax({
         type: "POST",
-        url: "/coupon/saveMemberCouponInfo",
+        url: "/coupon/saveMemberCoupon",
         data: param,
         success: function(response){
             alert("발급되었습니다.");
@@ -89,7 +89,7 @@ document.getElementById('member-coupon-remove-btn').addEventListener('click', fu
 
     $.ajax({
         type: "DELETE",
-        url: "/coupon/removeMemberCouponInfo",
+        url: "/coupon/removeMemberCoupon",
         contentType: "application/json",
         data: JSON.stringify(memberCouponSeqList),
         success: function(response){
@@ -100,4 +100,18 @@ document.getElementById('member-coupon-remove-btn').addEventListener('click', fu
             alert("발급취소에 실패했습니다. 다시 시도해주세요");
         }
     });
+});
+
+
+// 각 탭 아이템에 클릭 이벤트 추가
+document.querySelectorAll('#tabs .tab-link').forEach(function(tab) {
+  tab.addEventListener('click', function() {
+    // 모든 탭에서 'tab-on' 클래스 제거
+    tabs.forEach(function(tab) {
+      tab.classList.remove('current');
+    });
+
+    // 클릭한 탭에만 'tab-on' 클래스 추가
+    this.classList.add('current');
+  });
 });

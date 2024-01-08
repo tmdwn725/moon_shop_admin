@@ -14,6 +14,7 @@ public class MemberCouponDTO {
     private CouponDTO coupon;
     private String useYn;
     private Long[] memberSeqArray;
+    private Long[] memberCouponSeqArray;
     private Long memberSeq;
     private Long couponSeq;
 }

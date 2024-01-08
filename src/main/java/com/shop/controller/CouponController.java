@@ -1,6 +1,7 @@
 package com.shop.controller;
 
 import com.shop.dto.CouponDTO;
+import com.shop.dto.MemberCouponDTO;
 import com.shop.dto.MemberDTO;
 import com.shop.service.CouponService;
 import com.shop.service.MemberService;
@@ -10,9 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 
@@ -68,6 +67,16 @@ public class CouponController {
         String memberId = SecurityContextHolder.getContext().getAuthentication().getName();
         MemberDTO member = memberService.selectMemberById(memberId);
         couponService.saveCouponInfo(couponDTO);
+        return ResponseEntity.ok().build();
+    }
+    @PostMapping("/saveMemberCoupon")
+    public ResponseEntity<Void> saveMemberCoupon(MemberCouponDTO memberCouponDTO) {
+        couponService.saveMemberCoupon(memberCouponDTO);
+        return ResponseEntity.ok().build();
+    }
+    @DeleteMapping("/removeMemberCoupon")
+    public ResponseEntity<Void> removeMemberCoupon(MemberCouponDTO memberCouponDTO) {
+        couponService.removeMemberCoupon(memberCouponDTO);
         return ResponseEntity.ok().build();
     }
 }
