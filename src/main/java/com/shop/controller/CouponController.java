@@ -44,14 +44,16 @@ public class CouponController {
      */
     @RequestMapping("/couponInfo")
     public String couponInfo(Model model, CouponDTO coupon, @RequestParam(value="page",required = false, defaultValue="1") int page
-            , @RequestParam(value="searchStr",required = false, defaultValue="") String searchStr){
+            , @RequestParam(value="searchStr",required = false, defaultValue="") String searchStr
+            , @RequestParam(value="", required = false, defaultValue = "tab-1") String tab){
         CouponDTO couponDTO = new CouponDTO();
         Page<MemberDTO> memberList = null;
 
         if(coupon.getCouponSeq() > 0){
             couponDTO = couponService.selectCouponInfo(coupon.getCouponSeq());
-            memberList = couponService.selectMemberCouponList(page,6, coupon.getCouponSeq(), "");
+            memberList = couponService.selectMemberCouponList(page,6, coupon.getCouponSeq(), searchStr);
         }
+        model.addAttribute("tab",tab);
         model.addAttribute("coupon", couponDTO);
         model.addAttribute("memberList", memberList);
         return "coupon/couponInfo";
@@ -64,16 +66,24 @@ public class CouponController {
      */
     @RequestMapping("/saveCouponInfo")
     public ResponseEntity<Void> saveCouponInfo(CouponDTO couponDTO) throws IOException {
-        String memberId = SecurityContextHolder.getContext().getAuthentication().getName();
-        MemberDTO member = memberService.selectMemberById(memberId);
         couponService.saveCouponInfo(couponDTO);
         return ResponseEntity.ok().build();
     }
+    /**
+     * 사용자 쿠폰 발급
+     * @param memberCouponDTO
+     * @return
+     */
     @PostMapping("/saveMemberCoupon")
     public ResponseEntity<Void> saveMemberCoupon(MemberCouponDTO memberCouponDTO) {
         couponService.saveMemberCoupon(memberCouponDTO);
         return ResponseEntity.ok().build();
     }
+    /**
+     * 사용자 쿠폰 발급 취소
+     * @param memberCouponDTO
+     * @return
+     */
     @DeleteMapping("/removeMemberCoupon")
     public ResponseEntity<Void> removeMemberCoupon(MemberCouponDTO memberCouponDTO) {
         couponService.removeMemberCoupon(memberCouponDTO);

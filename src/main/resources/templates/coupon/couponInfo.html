@@ -41,6 +41,7 @@
                     <li class="tab-link" data-tab="tab-2">
                         사용자지정
                     </li>
+                    <input type="hidden" id="tab" th:value="${tab}">
                 </ul>
                 <br/>
                 <!-- Begin Page Content -->
@@ -53,10 +54,10 @@
                                 <input type="text" id="coupon-name" class="form-control bg-light" th:value="${coupon.couponName}">
                             </div>
                         </div>
-                        <div class="col-lg-3 col-md-6 col-sm-6">
+                        <div class="col-lg-2 col-md-6 col-sm-6">
                             <div class="checkout__form__input">
                                 <p>할인율 <span>*</span></p>
-                                <input type="number" class="disc-rate" id="disc-rate" name="disc-rate" min="0" max="100" th:value="${coupon.discRate}">
+                                <input type="number" class="disc-rate form-control bg-light" id="disc-rate" name="disc-rate" min="0" max="100" th:value="${coupon.discRate}">
                             </div>
                         </div>
                     </div>

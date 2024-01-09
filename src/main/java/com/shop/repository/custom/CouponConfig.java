@@ -6,4 +6,5 @@ import org.springframework.data.domain.Pageable;
 
 public interface CouponConfig {
     Page<Coupon> selectCouponPage(Pageable pageable, String searchStr);
+    void updateCouponInfo(Coupon coupon);
 }

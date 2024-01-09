@@ -1,6 +1,11 @@
+document.addEventListener("DOMContentLoaded", function(){
+    const tab = document.getElementById('tab').value;
+    const tabClick = document.querySelector('li[data-tab="' + tab + '"]');
+    tabClick.click();
+});
+
 // 쿠폰 정보 저장
 document.getElementById('coupon-save-btn').addEventListener('click', function(){
-
     const param = {
         couponSeq : document.getElementById('coupon-seq').value,
         couponName : document.getElementById('coupon-name').value,
@@ -61,7 +66,7 @@ document.getElementById('member-coupon-save-btn').addEventListener('click', func
         data: param,
         success: function(response){
             alert("발급되었습니다.");
-            window.location.href = "http://localhost:8082/coupon/getCouponInfo?couponSeq" + couponSeq;
+            window.location.href = "http://localhost:8082/coupon/couponInfo?couponSeq=" + param.couponSeq + "&tab=tab-2";
         },
         error: function(xhr, status, error) {
             alert("발급에 실패했습니다. 다시 시도해주세요");
@@ -70,7 +75,7 @@ document.getElementById('member-coupon-save-btn').addEventListener('click', func
 });
 
 document.getElementById('member-coupon-remove-btn').addEventListener('click', function() {
-    let memberCouponSeqList = [];
+    let memberCouponSeqArray = [];
     const checkedMemberSeq = document.getElementsByName("member-seq");
     let unCheckedCnt = 0;
     // 취득한 속성 만큼 루프
@@ -79,7 +84,7 @@ document.getElementById('member-coupon-remove-btn').addEventListener('click', fu
       if (checkedMemberSeq[i].checked == true) {
         const memberSeq = checkedMemberSeq[i].value;
         if(document.getElementById("member-seq-"+memberSeq)){
-            memberCouponSeqList.push(document.getElementById("member-seq-"+memberSeq).value);
+            memberCouponSeqArray.push(document.getElementById("member-seq-"+memberSeq).value);
         } else {
             checkedMemberSeq[i].checked = false;
             unCheckedCnt++;
@@ -87,21 +92,23 @@ document.getElementById('member-coupon-remove-btn').addEventListener('click', fu
       }
     }
 
+    const param = {
+      memberCouponSeqArray : memberCouponSeqArray
+    }
+
     $.ajax({
         type: "DELETE",
         url: "/coupon/removeMemberCoupon",
-        contentType: "application/json",
-        data: JSON.stringify(memberCouponSeqList),
+        data: param,
         success: function(response){
             alert("발급취소되었습니다.");
-            window.location.href = "http://localhost:8082/coupon/getCouponInfo?couponSeq" + couponSeq;
+            window.location.href = "http://localhost:8082/coupon/couponInfo?couponSeq=" + document.getElementById('coupon-seq').value + "&tab=tab-2";
         },
         error: function(xhr, status, error) {
             alert("발급취소에 실패했습니다. 다시 시도해주세요");
         }
     });
 });
-
 
 // 각 탭 아이템에 클릭 이벤트 추가
 document.querySelectorAll('#tabs .tab-link').forEach(function(tab) {

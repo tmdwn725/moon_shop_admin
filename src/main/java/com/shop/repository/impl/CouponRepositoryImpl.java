@@ -44,4 +44,19 @@ public class CouponRepositoryImpl implements CouponConfig {
         }
         return qCoupon.couponName.contains(searchStr);
     }
+
+    /**
+     * 쿠폰 정보 수정
+     * @param coupon
+     */
+    public void updateCouponInfo(Coupon coupon) {
+        queryFactory.update(qCoupon)
+                .set(qCoupon.couponName, coupon.getCouponName())
+                .set(qCoupon.discRate, coupon.getDiscRate())
+                .set(qCoupon.minPrice, coupon.getMinPrice())
+                .set(qCoupon.maxDiscPrice, coupon.getMaxDiscPrice())
+                .set(qCoupon.useStDate, coupon.getUseStDate())
+                .set(qCoupon.useEdDate, coupon.getUseEdDate())
+                .execute();
+    }
 }

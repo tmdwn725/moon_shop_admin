@@ -71,7 +71,11 @@ public class CouponService {
         coupon.createCoupon(couponDTO.getCouponSeq(), couponDTO.getCouponName(), couponDTO.getDiscRate(), couponDTO.getMinPrice()
                 , couponDTO.getMaxDiscPrice(), stDate, edDate, nowDateTime);
 
-        couponRepository.save(coupon);
+        if(coupon.getCouponSeq() > 0) {
+            couponRepository.updateCouponInfo(coupon);
+        }else {
+            couponRepository.save(coupon);
+        }
     }
     /**
      * 쿠폰 사용자 목록 조회
