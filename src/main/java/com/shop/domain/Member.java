@@ -26,7 +26,7 @@ public class Member {
     private String nickName;
     @Column(name = "email")
     private String email;
-    @Column(name = "zipCode")
+    @Column(name = "zip_code")
     private String zipCode;
     @Column(name = "address")
     private String address;
@@ -42,7 +42,7 @@ public class Member {
     @JsonManagedReference
     @OneToMany(mappedBy = "member", cascade = CascadeType.PERSIST)
     private List<MemberCoupon> memberCouponList;
-    public void craeteMember(LocalDateTime nowDate, String ... member){
+    public void createMember(LocalDateTime nowDate, String ... member){
         this.memberId = member[0];
         this.name = member[1];
         this.password = member[2];

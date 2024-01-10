@@ -3,6 +3,7 @@ package com.shop.dto;
 import com.shop.dto.enums.Role;
 import lombok.Data;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,6 +18,7 @@ public class MemberDTO {
     private String address;
     private String detailAddress;
     private String telNo;
+    private LocalDateTime joinDate;
     private Role role;
     private String newPassword;
     private String password;
