@@ -25,6 +25,24 @@ public class MemberController {
         model.addAttribute("memberList", memberList);
         return "member/memberList";
     }
+    /**
+     * 사용자 상세정보 조회
+     * @param memberDTO
+     * @param model
+     * @return
+     */
+    @GetMapping("/memberInfo")
+    public String memberInfo(MemberDTO memberDTO, Model model) {
+        return "member/memberInfo";
+    }
+
+    /**
+     * 관리자 목록 조회
+     * @param page
+     * @param searchStr
+     * @param model
+     * @return
+     */
     @GetMapping("/adminList")
     public String adminList(@RequestParam(value="page",required = false, defaultValue="1") int page
             , @RequestParam(value="searchStr",required = false, defaultValue="") String searchStr, Model model) {
