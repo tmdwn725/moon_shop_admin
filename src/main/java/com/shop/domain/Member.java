@@ -53,6 +53,6 @@ public class Member {
         this.detailAddress = member[7];
         this.telNo = member[8];
         this.joinDate = nowDate;
-        this.role = Role.USER;
+        this.role = Role.ADMIN;
     }
 }

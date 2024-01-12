@@ -9,15 +9,19 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class MemberService implements UserDetailsService {
     private final MemberRepository memberRepository;
@@ -29,6 +33,16 @@ public class MemberService implements UserDetailsService {
                 .password(member.getPassword())
                 .roles(member.getRole().name())
                 .build();
+    }
+
+    /**
+     * 사용자 상세 정보 조회
+     * @param memberSeq
+     * @return
+     */
+    public MemberDTO selectMember(Long memberSeq) {
+        MemberDTO dto = ModelMapperUtil.map(memberRepository.findById(memberSeq).get(), MemberDTO.class);
+        return dto;
     }
     /**
      * id로 member 정보 조회
@@ -55,5 +69,22 @@ public class MemberService implements UserDetailsService {
         pageRequest = PageRequest.of((total-1), limit);
         List<MemberDTO> list = ModelMapperUtil.mapAll(result.getContent(), MemberDTO.class);
         return new PageImpl<>(list, pageRequest, total);
+    }
+
+    /**
+     * 비밀번호 변경
+     * @param memberDTO
+     */
+    public void changeMyPassword(MemberDTO memberDTO) {
+        memberRepository.updatePassword(SecurityContextHolder.getContext().getAuthentication().getName(), memberDTO.getNewPassword());
+    }
+    /**
+     * 사용자 정보 수정
+     * @param memberDTO
+     */
+    public void updateMember(MemberDTO memberDTO){
+        Member member = new Member();
+        member.createMember(null, "", memberDTO.getName(), memberDTO.getPassword(), memberDTO.getNickName(), memberDTO.getEmail());
+        memberRepository.updateMember(member);
     }
 }

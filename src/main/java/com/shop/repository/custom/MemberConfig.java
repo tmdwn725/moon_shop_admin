@@ -8,4 +8,6 @@ import org.springframework.data.domain.Pageable;
 public interface MemberConfig {
     Member findByMemberId(String memberId);
     Page<Member> selectMemberPage(Pageable pageable, Role role, String searchStr);
+    void updatePassword(String memberId, String newPassword);
+    void updateMember(Member member);
 }
