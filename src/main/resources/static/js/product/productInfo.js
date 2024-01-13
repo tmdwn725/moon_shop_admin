@@ -185,8 +185,8 @@ document.querySelectorAll('.del-size').forEach((target) => target.addEventListen
         const productSize = e.target.getAttribute('data-parameter');
         const productSeq = document.getElementById('product-seq').value;
         $.ajax({
+            type: "delete",
             url: "/product/removeProductStock",
-            type: "DELETE",
             data:{
                 productSeq: productSeq,
                 sizeType: productSize
