@@ -42,17 +42,15 @@ public class Member {
     @JsonManagedReference
     @OneToMany(mappedBy = "member", cascade = CascadeType.PERSIST)
     private List<MemberCoupon> memberCouponList;
-    public void createMember(LocalDateTime nowDate, String ... member){
+    public void createMember(Long memberSeq, LocalDateTime nowDate, String ... member){
+        if(memberSeq > 0L){
+            this.memberSeq = memberSeq;
+        }
         this.memberId = member[0];
         this.name = member[1];
         this.password = member[2];
         this.nickName = member[3];
         this.email = member[4];
-        this.zipCode = member[5];
-        this.address = member[6];
-        this.detailAddress = member[7];
-        this.telNo = member[8];
-        this.joinDate = nowDate;
         this.role = Role.ADMIN;
     }
 }

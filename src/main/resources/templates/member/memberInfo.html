@@ -36,6 +36,7 @@
             <!-- Page Heading -->
             <ul class="tabs">
                 <li class="tab-link current" data-tab="tab-1">사용자 정보</li>
+                <!--<li th:if="${member.role == Role.ADMIN}" class="tab-link current" data-tab="tab-1">관리자 정보</li>-->
             </ul>
             <!-- Begin Page Content -->
             <div class="container-fluid tab-content current" id="tab-1">
@@ -83,7 +84,7 @@
                             <input type="password" id="confirm-password" class="form-control bg-light" placeholder="비밀번호 재입력">
                         </div>
                         <div th:if="${member.memberSeq > 0}" class="col-lg-2 col-md-6 col-sm-6 btn-group">
-                            <button type="button" class="n-btn btn-sm btn-accent disabled" id="btn-change-password">변경</button>
+                            <button type="button" class="n-btn btn-sm btn-accent disabled" id="btn-change-password" onclick="changePassword()">변경</button>
                         </div>
                     </div>
                 </div>

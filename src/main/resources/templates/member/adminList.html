@@ -81,7 +81,7 @@
                   <li class="paginate_button page-item previous disabled" id="dataTable_previous">
                     <a href="#" aria-controls="dataTable" data-dt-idx="0" tabindex="0" class="page-link">Prev</a>
                   </li>
-                  <li th:each="page : ${#numbers.sequence(1, memberList.totalPages)}" th:class="'paginate_button page-item '+ ${currentPage == page ? 'active' : ''}">
+                  <li th:each="page : ${#numbers.sequence(1, adminList.totalPages)}" th:class="'paginate_button page-item '+ ${currentPage == page ? 'active' : ''}">
                     <a th:href="@{/member/memberList(page=${page})}" class="page-link">[[${page}]]</a>
                   </li>
                   <li class="paginate_button page-item next disabled" id="dataTable_next">

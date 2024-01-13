@@ -83,7 +83,6 @@ public class MemberRepositoryImpl implements MemberConfig {
                 .set(qMember.name,member.getName())
                 .set(qMember.nickName, member.getNickName())
                 .set(qMember.email, member.getEmail())
-                .set(qMember.password, member.getPassword())
                 .where(qMember.memberSeq.eq(member.getMemberSeq()))
                 .execute();
     }

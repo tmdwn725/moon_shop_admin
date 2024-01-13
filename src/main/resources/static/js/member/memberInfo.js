@@ -1,5 +1,5 @@
 // 비밀번호 변경
-document.getElementById('btn-change-password').addEventListener('click', function(e){
+function changePassword() {
     const password = document.getElementById('new-password').value
     const confirmPassword = document.getElementById('confirm-password').value;
 
@@ -13,14 +13,14 @@ document.getElementById('btn-change-password').addEventListener('click', functio
         data:{"password" : password },
         success: function(response){
             alert("저장되었습니다.");
-            window.location.href = "http://localhost:8082/member/memberInfo?memeberSeq=" + memberSeq;
+            window.location.href = "http://localhost:8082/member/memberInfo?memberSeq=" + document.getElementById('member-seq').value;
         },
         error: function(xhr, status, error) {
             alert("저장에 실패했습니다.");
         }
     });
 
-});
+}
 // 사용자 정보 저장
 document.getElementById('btn-save').addEventListener('click', function(e){
     let param = {
@@ -46,10 +46,10 @@ document.getElementById('btn-save').addEventListener('click', function(e){
     $.ajax({
         type: "post",
         url: "/member/saveMember",
-        cdata: param,
+        data: param,
         success: function(response){
             alert("저장되었습니다.");
-            window.location.href = "http://localhost:8082/member/memberInfo?memeberSeq=" + memberSeq;
+            window.location.href = "http://localhost:8082/member/memberInfo?memberSeq=" + param.memberSeq;
         },
         error: function(xhr, status, error) {
             alert("저장에 실패했습니다.");

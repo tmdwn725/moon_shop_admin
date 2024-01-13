@@ -86,7 +86,7 @@ public class MemberService implements UserDetailsService {
     public void saveMember(MemberDTO memberDTO){
         LocalDateTime nowDate = LocalDateTime.now();
         Member member = new Member();
-        member.createMember(nowDate, "", memberDTO.getName(), memberDTO.getPassword(), memberDTO.getNickName(), memberDTO.getEmail());
+        member.createMember(memberDTO.getMemberSeq(), nowDate, memberDTO.getMemberId(), memberDTO.getName(), memberDTO.getPassword(), memberDTO.getNickName(), memberDTO.getEmail());
         if(memberDTO.getMemberSeq() > 0){
             memberRepository.updateMember(member);
         }else {
