@@ -43,8 +43,9 @@ public class Member {
     @OneToMany(mappedBy = "member", cascade = CascadeType.PERSIST)
     private List<MemberCoupon> memberCouponList;
     public void createMember(Long memberSeq, LocalDateTime nowDate, String ... member){
-        if(memberSeq > 0L){
+        if(memberSeq > 0L) {
             this.memberSeq = memberSeq;
+            this.joinDate = nowDate;
         }
         this.memberId = member[0];
         this.name = member[1];

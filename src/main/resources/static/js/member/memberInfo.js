@@ -30,8 +30,10 @@ document.getElementById('btn-save').addEventListener('click', function(e){
         nickName : document.getElementById("nick-name").value
     }
 
+    // 등록
     if(param.memberSeq == 0){
-        param.password = document.getElementById('new-password').value
+        param.memberId = document.getElementById('member-id').value;
+        param.password = document.getElementById('new-password').value;
         param.confirmPassword = document.getElementById('confirm-password').value;
         if(!isValidPassword(param.password, param.confirmPassword)){
             return false;
@@ -49,7 +51,12 @@ document.getElementById('btn-save').addEventListener('click', function(e){
         data: param,
         success: function(response){
             alert("저장되었습니다.");
-            window.location.href = "http://localhost:8082/member/memberInfo?memberSeq=" + param.memberSeq;
+            if(param.memberSeq == 0) { // 등록
+                window.location.href = "http://localhost:8082/member/adminList";
+            } else { // 수정
+                window.location.href = "http://localhost:8082/member/memberInfo?memberSeq=" + param.memberSeq;
+            }
+
         },
         error: function(xhr, status, error) {
             alert("저장에 실패했습니다.");
@@ -57,7 +64,7 @@ document.getElementById('btn-save').addEventListener('click', function(e){
     });
 });
 
-// 이메일 체크
+// 비밀번호 체크
 function isValidPassword(password, confirmPassword) {
     if (password === '') {
         alert('현재 비밀번호를 입력해주세요.');

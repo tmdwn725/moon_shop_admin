@@ -12,10 +12,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -101,5 +98,16 @@ public class MemberController {
         model.addAttribute("currentPage", page);
         model.addAttribute("adminList", adminList);
         return "member/adminList";
+    }
+
+    /**
+     * 사용자 정보 삭제
+     * @param memberSeq
+     * @return
+     */
+    @DeleteMapping("/removeMember")
+    public ResponseEntity<Void> removeMember(@RequestParam("memberSeq") Long memberSeq) {
+        memberService.removeMember(memberSeq);
+        return  ResponseEntity.ok().build();
     }
 }

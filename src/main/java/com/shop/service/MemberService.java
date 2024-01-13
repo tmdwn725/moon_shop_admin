@@ -93,4 +93,12 @@ public class MemberService implements UserDetailsService {
             memberRepository.save(member);
         }
     }
+
+    /**
+     * 사용자 정보 삭제
+     * @param memberSeq
+     */
+    public void removeMember(Long memberSeq){
+        memberRepository.deleteById(memberSeq);
+    }
 }
