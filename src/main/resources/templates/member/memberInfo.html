@@ -17,6 +17,7 @@
     <!-- Custom styles for this template-->
     <link th:href="@{/css/sb-admin-2.min.css}" rel="stylesheet">
     <link th:href="@{/css/common/tab.css}" rel="stylesheet">
+    <link th:href="@{/css/common/btn.css}" rel="stylesheet">
 </head>
 <body id="page-top">
 <!-- Page Wrapper -->
@@ -58,7 +59,7 @@
                     <div class="col-lg-6 col-md-6 col-sm-6">
                         <div class="checkout__form__input">
                             <p>이름(실명) <span>*</span></p>
-                            <input type="text" id="name" class="form-control bg-light" placeholder="이름(실명)" th:value="${member.name}">
+                            <input type="text" id="member-name" class="form-control bg-light" placeholder="이름(실명)" th:value="${member.name}">
                         </div>
                     </div>
                     <div class="col-lg-6 col-md-6 col-sm-6">
@@ -81,7 +82,7 @@
                             <p>비밀번호 재입력 <span>*</span></p>
                             <input type="password" id="confirm-password" class="form-control bg-light" placeholder="비밀번호 재입력">
                         </div>
-                        <div class="col-lg-2 col-md-6 col-sm-6 btn-group">
+                        <div th:if="${member.memberSeq > 0}" class="col-lg-2 col-md-6 col-sm-6 btn-group">
                             <button type="button" class="n-btn btn-sm btn-accent disabled" id="btn-change-password">변경</button>
                         </div>
                     </div>

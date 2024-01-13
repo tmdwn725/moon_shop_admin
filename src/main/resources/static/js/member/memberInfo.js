@@ -3,20 +3,7 @@ document.getElementById('btn-change-password').addEventListener('click', functio
     const password = document.getElementById('new-password').value
     const confirmPassword = document.getElementById('confirm-password').value;
 
-    if (password === '') {
-        alert('현재 비밀번호를 입력해주세요.');
-        return false;
-    }
-
-    if (password.length < 4) {
-        alert('비밀번호 4자 이상이여야합니다.');
-        return false;
-    }
-
-    if (password !== confirmPassword) {
-        alert('신규 비밀번호와 재입력 비밀번호가 같지 않습니다.');
-        document.getElementById('confirm-password').value = '';
-        document.getElementById('new-password').value = '';
+    if(!isValidPassword(password, confirmPassword)){
         return false;
     }
 
@@ -36,11 +23,19 @@ document.getElementById('btn-change-password').addEventListener('click', functio
 });
 // 사용자 정보 저장
 document.getElementById('btn-save').addEventListener('click', function(e){
-    const param = {
+    let param = {
         memberSeq : document.getElementById('member-seq').value,
         email : document.getElementById("email").value,
         name : document.getElementById("member-name").value,
         nickName : document.getElementById("nick-name").value
+    }
+
+    if(param.memberSeq == 0){
+        param.password = document.getElementById('new-password').value
+        param.confirmPassword = document.getElementById('confirm-password').value;
+        if(!isValidPassword(param.password, param.confirmPassword)){
+            return false;
+        }
     }
 
     if (!isValidEmail(param.email)) {
@@ -61,6 +56,27 @@ document.getElementById('btn-save').addEventListener('click', function(e){
         }
     });
 });
+
+// 이메일 체크
+function isValidPassword(password, confirmPassword) {
+    if (password === '') {
+        alert('현재 비밀번호를 입력해주세요.');
+        return false;
+    }
+
+    if (password.length < 4) {
+        alert('비밀번호 4자 이상이여야합니다.');
+        return false;
+    }
+
+    if (password !== confirmPassword) {
+        alert('신규 비밀번호와 재입력 비밀번호가 같지 않습니다.');
+        document.getElementById('confirm-password').value = '';
+        document.getElementById('new-password').value = '';
+        return false;
+    }
+    return true;
+}
 
 // 이메일 체크
 function isValidEmail(email) {

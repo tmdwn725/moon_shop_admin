@@ -17,6 +17,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -82,9 +83,14 @@ public class MemberService implements UserDetailsService {
      * 사용자 정보 수정
      * @param memberDTO
      */
-    public void updateMember(MemberDTO memberDTO){
+    public void saveMember(MemberDTO memberDTO){
+        LocalDateTime nowDate = LocalDateTime.now();
         Member member = new Member();
-        member.createMember(null, "", memberDTO.getName(), memberDTO.getPassword(), memberDTO.getNickName(), memberDTO.getEmail());
-        memberRepository.updateMember(member);
+        member.createMember(nowDate, "", memberDTO.getName(), memberDTO.getPassword(), memberDTO.getNickName(), memberDTO.getEmail());
+        if(memberDTO.getMemberSeq() > 0){
+            memberRepository.updateMember(member);
+        }else {
+            memberRepository.save(member);
+        }
     }
 }

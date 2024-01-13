@@ -52,7 +52,11 @@ public class MemberController {
      */
     @GetMapping("/memberInfo")
     public String memberInfo(MemberDTO memberDTO, Model model) {
-        model.addAttribute("member",memberService.selectMember(memberDTO.getMemberSeq()));
+        MemberDTO member = new MemberDTO();
+        if(member.getMemberSeq() > 0){
+            member = memberService.selectMember(memberDTO.getMemberSeq());
+        }
+        model.addAttribute("member", member);
         return "member/memberInfo";
     }
 
@@ -78,7 +82,7 @@ public class MemberController {
     @PostMapping("/saveMember")
     public ResponseEntity<Void> saveMember(MemberDTO memberDTO) {
         memberDTO.setPassword(passwordEncoder.encode(memberDTO.getPassword()));
-        memberService.updateMember(memberDTO);
+        memberService.saveMember(memberDTO);
         return ResponseEntity.ok().build();
     }
     /**
