@@ -16,7 +16,7 @@
   <link th:href="@{/css/sb-admin-2.min.css}" rel="stylesheet">
   <!-- Custom styles for this page -->
   <link th:href="@{/css/vendor/datatables/dataTables.bootstrap4.min.css}" rel="stylesheet">
-  <link th:href="@{/css/product/productList.css}" rel="stylesheet">
+  <link th:href="@{/css/member/memberList.css}" rel="stylesheet">
 </head>
 
 <body id="page-top">
@@ -54,7 +54,7 @@
           </div>
           <div class="member-body">
             <div class="table-responsive">
-              <table class="table product-table" id="dataTable" width="100%" cellspacing="0">
+              <table class="table member-table" id="dataTable" width="100%" cellspacing="0">
                 <thead>
                 <tr>
                   <th>NO</th>
@@ -62,6 +62,7 @@
                   <th>닉네임</th>
                   <th>이름</th>
                   <th>등록일</th>
+                  <th></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -71,6 +72,7 @@
                   <td th:text="${member.nickName}" th:onclick="|location.href='@{/member/memberInfo?memberSeq=}${member.memberSeq}'|"/>
                   <td th:text="${member.name}"/>
                   <td th:text="${#temporals.format(member.joinDate, 'yyyy-MM-dd')}"/>
+                  <td class="member-delete"><button type="button" class="btn btn-remove" th:onclick="'removeMember(' + ${member.memberSeq} + ')'">삭제</button></td>
                 </tr>
                 </tbody>
               </table>
@@ -131,7 +133,7 @@
 
 <!-- Page level custom scripts -->
 <script th:src="@{/js/demo/datatables-demo.js}"></script>
-
+<script th:src="@{/js/member/memberList.js}"></script>
 </body>
 
 </html>
