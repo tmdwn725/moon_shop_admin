@@ -1,3 +1,27 @@
+document.addEventListener("DOMContentLoaded", function(){
+    $('.summernote').summernote({
+    	  height: 500,
+    	  lang: "ko-KR"
+    });
+});
+
+function fnCk() {
+    const cnt1 = $("#cnt1").text();
+    const param = { cnt1:cnt1, cnt2:cnt2};
+    $.ajax({
+        type: "POST",
+        url: "/saveTest",
+        data:param,
+        success: function(response){
+            console.log("등록");
+            alert("저장되었습니다.");
+        },
+        error: function(xhr, status, error) {
+            alert("저장에 실패했습니다.");
+        }
+    });
+}
+
 // 이미지 클릭시 파일 버튼 클릭
 const upload = document.querySelector('.upload');
 const upload1 = document.querySelector('.upload1');
